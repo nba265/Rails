@@ -4,7 +4,9 @@ class Payment < ApplicationRecord
   has_many :payment_details
   belongs_to :customer
   serialize :info, JSON
-  accepts_nested_attributes_for :payment_details
+  accepts_nested_attributes_for :payment_details,
+    allow_destroy: true,
+    reject_if: proc { |attributes| attributes['menu_type'].blank? || attributes['menu_id'].blank? }
 
   def new
     @payment = Payment.new
